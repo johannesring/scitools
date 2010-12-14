@@ -488,7 +488,7 @@ def subst(patterns, replacements, filenames,
     # pre-compile patterns:
     cpatterns = [re.compile(pattern, pattern_matching_modifiers) \
                  for pattern in patterns]
-    modified_files = {p: [] for p in patterns}  # init
+    modified_files = dict([(p,[]) for p in patterns])  # init
     messages = []   # for return info
 
     for filename in filenames:
