@@ -1,6 +1,6 @@
 
 :mod:`scitools.modulecheck`
-=======================
+===========================
 
 .. automodule:: scitools.modulecheck
    :members:

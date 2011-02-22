@@ -100,7 +100,7 @@ class StringFunction:
     when simple string formulas cannot describe the function, e.g., when
     there are multiple if-branches inside the function expression.
     
-    As an example, there is a function called _test_function,
+    As an example, there is a function called _test_function::
 
         def _test_function(x, c=0, a=1, b=2):
             if x > c:
@@ -130,23 +130,24 @@ class StringFunction:
     The StringFunction class can work with sin, cos, exp, and other
     mathematical functions if the argument is a scalar (float or int) type.
     If the argument is a vector, the NumPy versions of sin, cos,
-    exp, etc., are needed. A common error message in the latter case is
+    exp, etc., are needed. A common error message in the latter case is::
 
-    TypeError: only rank-0 arrays can be converted to Python scalars.
+       TypeError: only rank-0 arrays can be converted to Python scalars.
 
-    Make something like
+    Make something like::
 
-    from numpy import *
-    # or
-    from scitools.std import *
-    # or
-    from numpy import sin, cos
+       from numpy import *
+       # or
+       from scitools.std import *
+       # or
+       from numpy import sin, cos
 
     in the calling code and supply globals=globals() as argument to
-    the constructor:
-    f = StringFunction('1+x*y', independent_variables=('x', 'y'),
-                       globals=globals())
-    f(p,q) will now work for NumPy arrays p and q.
+    the constructor::
+
+       f = StringFunction('1+x*y', independent_variables=('x', 'y'),
+                          globals=globals())
+       # f(p,q) will now work for NumPy arrays p and q.
 
     You can also omit the globals argument when constructing the
     StringFunction and later call

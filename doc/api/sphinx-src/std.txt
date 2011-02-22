@@ -1,6 +1,6 @@
 
 :mod:`scitools.std`
-=======================
+===================
 
 .. automodule:: scitools.std
    :members:

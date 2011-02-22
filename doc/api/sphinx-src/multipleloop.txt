@@ -1,6 +1,6 @@
 
 :mod:`scitools.multipleloop`
-=======================
+============================
 
 .. automodule:: scitools.multipleloop
    :members:

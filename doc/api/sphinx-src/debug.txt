@@ -1,6 +1,6 @@
 
 :mod:`scitools.debug`
-=======================
+=====================
 
 .. automodule:: scitools.debug
    :members:

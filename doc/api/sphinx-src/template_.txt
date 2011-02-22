@@ -1,6 +1,6 @@
 
 :mod:`scitools.easyviz.template_`
-=======================
+=================================
 
 .. automodule:: scitools.easyviz.template_
    :members:

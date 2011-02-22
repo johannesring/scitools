@@ -1,6 +1,6 @@
 
 :mod:`scitools.EfficiencyTable`
-=======================
+===============================
 
 .. automodule:: scitools.EfficiencyTable
    :members:

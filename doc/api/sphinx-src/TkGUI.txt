@@ -1,6 +1,6 @@
 
 :mod:`scitools.TkGUI`
-=======================
+=====================
 
 .. automodule:: scitools.TkGUI
    :members:

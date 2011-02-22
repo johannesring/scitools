@@ -1,6 +1,6 @@
 
 :mod:`scitools.Regression`
-=======================
+==========================
 
 .. automodule:: scitools.Regression
    :members:

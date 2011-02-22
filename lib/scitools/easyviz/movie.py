@@ -716,17 +716,17 @@ def movie(input_files, **kwargs):
     machine in question (unless it is specified as a keyword argument
     to the movie function).
 
-    Suppose we have some image files named image_0000.eps, image_0001.eps,
-    image_0002.eps, ... Note that the zero-padding, obtained by the printf
-    format 04d in this case, ensures that the files are listed in correct
-    numeric order when using a wildcard notation like image_*.eps.
+    Suppose we have some image files named `image_0000.eps`, `image_0001.eps`,
+    `image_0002.eps`, ... Note that the zero-padding, obtained by the printf
+    format `04d` in this case, ensures that the files are listed in correct
+    numeric order when using a wildcard notation like `image_*.eps`.
     We want to make a movie out of these files, where each file constitutes
     a frame in the movie. This task can be accomplished by the simple call::
 
         movie('image_*.eps')
 
     The result is a movie file with a default name such as
-    'movie.avi', 'movie.mpeg', or 'movie.gif' (depending on the
+    `movie.avi`, `movie.mpeg`, or `movie.gif` (depending on the
     encoding tool chosen by the movie function). The file resides in
     the current working directory.
 
@@ -773,31 +773,31 @@ def movie(input_files, **kwargs):
     Required arguments:
 
     input_files: Specifies the image files which will be used to make the
-                 movie. The argument must be given either as a string,
-                 e.g., 'image_*.png' or a list/tuple of strings, e.g.,
-                 glob.glob('image_*.png').
+    movie. The argument must be given either as a string,
+    e.g., 'image_*.png' or a list/tuple of strings, e.g.,
+    glob.glob('image_*.png').
 
-     Notes:
+    Notes:
                    
-      - When using the FFmpeg or the Mpeg2enc tools, the image
-        files should be given (if possible) as a string on the
-        format '{1}%{2}d{3}', where the name components are as
-        follows:
+        * When using the FFmpeg or the Mpeg2enc tools, the image
+          files should be given (if possible) as a string on the
+          format '{1}%{2}d{3}', where the name components are as
+          follows:
                      
           - {1} filename prefix (e.g. image_)
           - {2} counting placeholder (like in C, printf, e.g. 04)
           - {3} file extension (e.g. .png or .jpg)
 
-         Eexample of a correct description of the input files
-         is image_%04d.png. If the input files are not given on
-         the correct format, there will automatically be made
-         copies of these files which will then be renamed to the
-         required filename format.
+          Example of a correct description of the input files
+          is image_%04d.png. If the input files are not given on
+          the correct format, there will automatically be made
+          copies of these files which will then be renamed to the
+          required filename format.
                      
-      - MEncoder, FFmpeg, and Mpeg2enc supports only .jpg and
-        .png image files. So, if the input files are on another
-        format, there will automatically be made copies which
-        in turn will be converted to the correct format.
+        * MEncoder, FFmpeg, and Mpeg2enc supports only .jpg and
+          .png image files. So, if the input files are on another
+          format, there will automatically be made copies which
+          in turn will be converted to the correct format.
     
     Optional arguments:
 
@@ -813,8 +813,8 @@ def movie(input_files, **kwargs):
     (.mpg, .mpeg, or .m2v) and MNG (Multiple-image Network
     Graphics).
 
-    overwrite_output: If True, the file given in the output_file argument
-    above will be overwritten without warning (if it already
+    overwrite_output: If True, the file given in the output_file
+    argument above will be overwritten without warning (if it already
     exists). The default is True.
     
     encoder: Sets the encoder tool to be used. Currently the following
@@ -822,8 +822,7 @@ def movie(input_files, **kwargs):
     'mpeg_encode', 'ppmtompeg' (from the Netpbm package),
     'mpeg2enc' (from the MJPEGTools package), and 'convert'
     (from the ImageMagick package).
-
-    Note: ppmtompeg and mpeg_encode is the same tool.
+    Note: 'ppmtompeg' and 'mpeg_encode' is the same tool.
       
     vbitrate: Sets the bit rate of the movie. The default is 800 kbps
     when using the FFmpeg and MEncoder encoders. For
@@ -841,11 +840,11 @@ def movie(input_files, **kwargs):
 
     Notes:
 
-     - The mpeg_encode, ppmtompeg, and mpeg2enc tools only
+     * The 'mpeg_encode', 'ppmtompeg', and 'mpeg2enc' tools only
        supports the following frame rates: 23.976, 24, 25,
        29.97, 30, 50, 59.94, and 60 fps.
 
-     - Not all video codecs have support for arbitrary frame
+     * Not all video codecs have support for arbitrary frame
        rates (e.g., 'mpeg1video' and 'mpeg2video').
 
     vcodec: Sets the video codec to be used. Some of the possible codecs
@@ -875,15 +874,15 @@ def movie(input_files, **kwargs):
 
     Notes:
                    
-      - Run 'ffmpeg -formats' for a longer list of available
+      * Run 'ffmpeg -formats' for a longer list of available
         codecs.
 
-      - The mencoder tool can also use the 'xvid' codec.
+      * The mencoder tool can also use the 'xvid' codec.
 
-      - Only 'mpeg1video' and 'mpeg2video' are available when
+      * Only 'mpeg1video' and 'mpeg2video' are available when
         using the mpeg2enc tool. 
 
-      - This option has no effect when using mpeg_encode,
+      * This option has no effect when using mpeg_encode,
         ppmtompeg, or convert as the encoding tool.
 
     qscale: The quantization scale value (qscale) give a trade-off
@@ -937,12 +936,12 @@ def movie(input_files, **kwargs):
 
     Notes:
                    
-      - mpeg_encode and ppmtompeg only supports the following
+      * 'mpeg_encode' and 'ppmtompeg' only support the following
         aspect ratios: 1.0, 0.6735, 0.7031, 0.7615,0.8055,
         0.8437, 0.8935, 0.9157, 0.9815, 1.0255, 1.0695, 1.0950,
         1.1575, and 1.2015.
 
-      - mpeg2enc only supports the following aspect ratios: 1.0,
+      * 'mpeg2enc' only supports the following aspect ratios: 1.0,
         1.33, 1.77, and 2.21.
 
     preferred_package: Sets whether to prefer the Netpbm package or the
@@ -952,10 +951,10 @@ def movie(input_files, **kwargs):
 
     Notes:
 
-      - If only one of the packages is installed, then that
+      * If only one of the packages is installed, then that
         package will be used.
 
-      - If none of the packages are installed, then some
+      * If none of the packages are installed, then some
         operations might stop in lack of needed programs.
 
     gop_size: Sets the number of frames in a group of pictures (GOP).
@@ -976,13 +975,13 @@ def movie(input_files, **kwargs):
 
     Known issues:
 
-      - JPEG images created by the Vtk backend does not seem to work with
+      * JPEG images created by the Vtk backend does not seem to work with
         the MEncoder and FFmpeg tools. This can be fixed by setting the
         force_conversion argument to True. This will force conversion of the
         JPEG files to PNG files which in turn should successfully create the
         movie.
 
-      - Aspect ratio in mpeg_encode does not seem to work.
+      * Aspect ratio in mpeg_encode does not seem to work.
     """
     me = MovieEncoder(input_files, **kwargs)
     me.encode()

@@ -1,6 +1,6 @@
 
 :mod:`scitools.MovingPlotWindow`
-=======================
+================================
 
 .. automodule:: scitools.MovingPlotWindow
    :members:

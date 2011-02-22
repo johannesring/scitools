@@ -1,6 +1,6 @@
 
 :mod:`scitools.easyviz.dx_`
-=======================
+===========================
 
 .. automodule:: scitools.easyviz.dx_
    :members:

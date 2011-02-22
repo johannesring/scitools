@@ -1,6 +1,6 @@
 
 :mod:`scitools.PrmDictBase`
-=======================
+===========================
 
 .. automodule:: scitools.PrmDictBase
    :members:

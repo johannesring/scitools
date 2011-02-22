@@ -407,17 +407,17 @@ def combine(prm_values):
     Compute the combination of all parameter values in the prm_values
     (nested) list. Main function in this module.
 
-    param prm_values: nested list (`parameter_name`, `list_of_parameter_values`)
-    or dictionary `prm_values[parameter_name]` = `list_of_parameter_values`.
-    return: (`all`, `names`, `varied`) where
+    param prm_values: nested list ``(parameter_name, list_of_parameter_values)``
+    or dictionary ``prm_values[parameter_name] = list_of_parameter_values``.
+    return: (all, names, varied) where
 
-      - `all` contains all combinations (experiments)
+      - all contains all combinations (experiments)
         all[i] is the list of individual parameter values in
         experiment no i
 
-      - `names` contains a list of all parameter names
+      - names contains a list of all parameter names
 
-      - `varied` holds a list of parameter names that are varied
+      - varied holds a list of parameter names that are varied
         (i.e. where there is more than one value of the parameter,
         the rest of the parameters have fixed values)
 
@@ -450,7 +450,7 @@ def combine(prm_values):
 def pairs(prm_values, n=2):
     """
     Compute parameter combinations of the parameter values in
-    `prm_values` (list of (name, values) pairs, where values is
+    prm_values (list of (name, values) pairs, where values is
     a list of values). Not all combinations are computed (as
     in function combine), but only a subset so that all pairs
     of all parameter values appear once. This gives a substantially
@@ -771,7 +771,7 @@ class MultipleLoop:
     """
     def __init__(self, option_prefix='--'):
         """
-        `option_prefix` is the prefix that will be used in command-line
+        option_prefix is the prefix that will be used in command-line
         options (typically '-' or '--').
         """
         self.option_prefix = option_prefix

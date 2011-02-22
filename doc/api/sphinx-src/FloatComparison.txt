@@ -1,6 +1,6 @@
 
 :mod:`scitools.FloatComparison`
-=======================
+===============================
 
 .. automodule:: scitools.FloatComparison
    :members:

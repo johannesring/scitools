@@ -1,6 +1,6 @@
 
 :mod:`scitools.StringFunction`
-=======================
+==============================
 
 .. automodule:: scitools.StringFunction
    :members:

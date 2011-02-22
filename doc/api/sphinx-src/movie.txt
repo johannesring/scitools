@@ -1,6 +1,6 @@
 
 :mod:`scitools.easyviz.movie`
-=======================
+=============================
 
 .. automodule:: scitools.easyviz.movie
    :members:

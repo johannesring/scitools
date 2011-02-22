@@ -1,6 +1,6 @@
 
 :mod:`scitools.BoxField`
-=======================
+========================
 
 .. automodule:: scitools.BoxField
    :members:

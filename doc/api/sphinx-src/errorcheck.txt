@@ -1,6 +1,6 @@
 
 :mod:`scitools.errorcheck`
-=======================
+==========================
 
 .. automodule:: scitools.errorcheck
    :members:

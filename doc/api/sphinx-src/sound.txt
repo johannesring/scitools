@@ -1,6 +1,6 @@
 
 :mod:`scitools.sound`
-=======================
+=====================
 
 .. automodule:: scitools.sound
    :members:

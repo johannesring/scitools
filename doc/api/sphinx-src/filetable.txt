@@ -1,6 +1,6 @@
 
 :mod:`scitools.filetable`
-=======================
+=========================
 
 .. automodule:: scitools.filetable
    :members:

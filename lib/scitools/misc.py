@@ -61,6 +61,7 @@ def system(command, verbose=True, failure_handling='exit', fake=False):
     systems, and the output from the system command is fetched.
 
     ================  ========================================================
+    ================  ========================================================
     command           operating system command to be executed
     verbose           False: no output, True: print command prior to execution
     failure_handling  one of 'exit', 'warning', 'exception', or 'silent'
@@ -120,6 +121,7 @@ def read_cml(option, default=None, argv=sys.argv):
     the value of the object (see the str2obj function).
 
     ================  ========================================================
+    ================  ========================================================
     option            command-line option (str)
     default           default value associated with the option
     argv              list that is scanned for command-line arguments
@@ -146,7 +148,8 @@ def str2bool(s):
     """
     Turn a string s, holding some boolean value
     ('on', 'off', 'True', 'False', 'yes', 'no' - case insensitive)
-    into boolean variable. s can also be a boolean. Example::
+    into boolean variable. s can also be a boolean. Example:
+    
     >>> str2bool('OFF')
     False
     >>> str2bool('yes')
@@ -170,16 +173,15 @@ def str2bool(s):
                         (s, type(s)))
     
 
-def str2obj(s, globals=globals(), locals=locals(), debug=False):
+def str2obj(s, globals_=None, locals_=None, debug=False):
     """
     Turn string s into the corresponding object. str2obj is mainly
     used to take a string from a GUI or the command line and
-    create a Python object. For example::
+    create a Python object. For example:
 
     >>> s = str2obj('0.3')
     >>> print s, type(s)
     0.3 <type 'float'>
-
     >>> s = str2obj('(1,8)')
     >>> print s, type(s)
     (1, 8) <type 'tuple'>
@@ -198,16 +200,19 @@ def str2obj(s, globals=globals(), locals=locals(), debug=False):
 
     In this function we first try to see if s is a boolean value,
     using scitools.misc.str2bool. If this does is not successful,
-    we try eval(s), and if it works, we return the resulting object.
-    Otherwise, s is (most probably) a string, so we return s itself.
+    we try eval(s, globals_, locals_), and if it works, we return
+    the resulting object. Otherwise, s is (most probably) a string,
+    so we return s itself. The None value of locals_ and globals_
+    implies using locals() and globals() in this function.
 
-    Examples::
+    Examples:
 
     >>> strings = ('0.3', '5', '[-1,2]', '-1+3j', 'dict(a=1,b=0,c=2)',
     ...            'some string', 'true', 'ON', 'no')
     >>> for s in strings:
     ...     obj = str2obj(s)
     ...     print '"%s" -> %s %s' % (s, obj, type(obj)
+    ...
     "0.3" -> 0.3 <type 'float'>
     "5" -> 5 <type 'int'>
     "[-1,2]" -> [-1, 2] <type 'list'>
@@ -217,6 +222,7 @@ def str2obj(s, globals=globals(), locals=locals(), debug=False):
     "true" -> True <type 'bool'>
     "ON" -> True <type 'bool'>
     "no" -> False <type 'bool'>
+    >>>
     
     If the name of a user defined function, class or instance is
     sent to str2obj, the calling code must also send locals() and
@@ -224,16 +230,16 @@ def str2obj(s, globals=globals(), locals=locals(), debug=False):
     will not know how to "eval" the string and produce the right
     object (user-defined types are unknown inside str2obj unless
     the calling code's globals and locals are provided).
-    Here is an example::
+    Here is an example:
     
     >>> def myf(x):
     ...     return 1+x
-    ... 
+    ...
     >>> class A:
     ...     pass
-    ... 
+    ...
     >>> a = A()
-    >>> 
+    >>>
     >>> s = str2obj('myf')
     >>> print s, type(s)   # now s is simply the string 'myf'
     myf <type 'str'>
@@ -246,22 +252,27 @@ def str2obj(s, globals=globals(), locals=locals(), debug=False):
     <__main__.A instance at 0xb70f6fcc> <type 'instance'>
 
     With debug=True, the function will print out the exception
-    encountered when doing eval(s), and this may point out
-    problems with, e.g., imports in the calling code (insufficient
-    variables in globals).
+    encountered when doing eval(s, globals_, locals_), and this may
+    point out problems with, e.g., imports in the calling code
+    (insufficient variables in globals_).
 
     Note: if the string argument is the name of a valid Python
     class (type), that class will be returned. For example,
     >>> str2obj('list')  # returns class list
     <type 'list'>
     """
+    if globals_ is None:
+        globals_ = globals()
+    if locals_ is None:
+        locals_ = locals()
+    
     try:
         b = str2bool(s)
         return b
     except (ValueError, TypeError), e:
         # s is not a boolean value, try eval(s):
         try:
-            b = eval(s, globals, locals)
+            b = eval(s, globals_, locals_)
             return b
         except Exception, e:
             if debug:
@@ -299,7 +310,8 @@ def str2type(value):
     conversion from a string to the right user-defined type cannot
     be done by the function returned from str2type.
 
-    Examples::
+    Examples:
+    
     >>> f = str2type((1,4,3))
     >>> f.__name__
     'tuple'
@@ -329,15 +341,18 @@ def str2type(value):
         return str
     
 
-def interpret_as_callable_or_StringFunction(s, iv, globals=globals()):
+def interpret_as_callable_or_StringFunction(s, iv, globals_=None):
     """
     Return a callable object if s is the name of such an
     object, otherwise turn s to a StringFunction with
     iv as the name of the independent variable.
-    Used by the read_cml function.
+    Used by the read_cml function. The globals_ variable is set
+    equal to the module's globals() by default (None).
     """
+    if globals_ is None:
+        globals_ = globals()
     try:
-        evaled_s = eval(s, globals)
+        evaled_s = eval(s, globals_)
         if callable(evaled_s):
             return evaled_s
         else:
@@ -348,7 +363,7 @@ def interpret_as_callable_or_StringFunction(s, iv, globals=globals()):
             if isinstance(iv, str):  # single indep. variable?
                 iv = [iv]
             func = StringFunction(s, independent_variables=iv,
-                                  globals=globals)
+                                  globals=globals_)
         except Exception, e:
             raise ValueError(
                 '%s\n"%s" must be a function name, instance creation, \
@@ -356,7 +371,7 @@ def interpret_as_callable_or_StringFunction(s, iv, globals=globals()):
         return func
 
 
-def read_cml_func(option, default_func, iv='t', globals=globals()):
+def read_cml_func(option, default_func, iv='t', globals_=None):
     """
     Locate --option on the command line (sys.argv) and find
     the corresponding value (next sys.argv element).
@@ -370,12 +385,14 @@ def read_cml_func(option, default_func, iv='t', globals=globals()):
     StringFunction object) is returned. For StringFunctions the iv
     argument specifies the name(s) of the independent variable(s).
     Parameters to StringFunction objects are not supported.  The
-    globals argument are used for eval(callable_name) or when
+    globals_ argument are used for eval(callable_name) or when
     creating the  StringFunction object.
 
     Note that this function always returns a callable object,
     supposed to be a user-defined function.
     """
+    if globals_ is None:
+        globals_ = globals()
     if option in sys.argv:
         i = sys.argv.index(option)
         try:
@@ -385,7 +402,7 @@ def read_cml_func(option, default_func, iv='t', globals=globals()):
                 'no value after option %s on the command line' \
                 % option)
         value = interpret_as_callable_or_StringFunction\
-                (value, iv, globals=globals)
+                (value, iv, globals=globals_)
     else:
         value = default_func
     return value
@@ -468,6 +485,7 @@ def subst(patterns, replacements, filenames,
 
     A copy of the original file is taken, with extension `.old~`.
 
+    ==========================  ======================================
     ==========================  ======================================
     patterns                    string or list of strings (regex)
     replacements                string or list of strings (regex)
@@ -1104,26 +1122,6 @@ def hardware_info():
     result['identifier'] = platform.platform()
     return result
 
-def checkmathfunc(f, args):
-    """
-    Investigate the (mathematical) function f(*args):
-
-      - Check that f works with scalar and array arguments
-
-      - Check if args are scalars and if basic functions in
-        f apply Numerical Python versions and not math
-    """
-    import numarray, Numeric
-    # local import:
-    __import__('Numeric', globals(), locals(), dir(Numeric))
-    # could time f with scalar arguments
-    # local import of math
-    # time f again to see if f was faster
-
-    # run f with 1D and 3D arrays, compare result with
-    # corresponding loops and scalar evaluations
-    raise NotImplementedError('NOT IMPLEMENTED YET')
-
 
 def memusage(_proc_pid_stat = '/proc/%s/stat'%(os.getpid())):
     """
@@ -1310,7 +1308,7 @@ class DoNothing(object):
     
     For example, say a plot function returns a plot object that
     is used widely in a code to create windows with visualizations
-    on the screen, and you want to turn off all these visualizations::
+    on the screen, and you want to turn off all these visualizations:
 
     >>> from scitools.misc import DoNothing
     >>> plot = DoNothing('Plotting turned off')
@@ -1365,7 +1363,7 @@ def fix_latex_command_regex(pattern, application='match'):
     of commands and other regular expressions (\s, \d, etc.) as the
     latter will end up with an extra undesired backslash.
 
-    Here are examples on failures::
+    Here are examples on failures:
 
     >>> re.sub(r'\begin\{equation\}', r'\[', r'\begin{equation}')
     '\\begin{equation}'
@@ -1385,7 +1383,7 @@ def fix_latex_command_regex(pattern, application='match'):
     '\\fbox{not}'
 
     Avoid mixing LaTeX commands and ordinary regular expression
-    commands, e.g.::
+    commands, e.g.:
 
     >>> pattern = fix(r'\mbox\{(\d+)\}', application='match')
     >>> pattern

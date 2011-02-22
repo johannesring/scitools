@@ -1,6 +1,6 @@
 
 :mod:`scitools.basics`
-=======================
+======================
 
 .. automodule:: scitools.basics
    :members:

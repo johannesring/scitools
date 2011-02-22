@@ -1,6 +1,6 @@
 
 :mod:`scitools.aplotter`
-=======================
+========================
 
 .. automodule:: scitools.aplotter
    :members:
