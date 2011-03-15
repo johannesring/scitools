@@ -123,10 +123,11 @@ class MovieEncoder(object):
             print '\nMaking HTML code for displaing', ', '.join(files)
             fps = self._prop['fps']
             interval_ms = 1000.0/fps
+            outf = self._prop['output_file']
+            casename = os.path.splitext(outf)[0]
             header, jscode, form, footer = \
-                html_movie(files, interval_ms)
+                html_movie(files, interval_ms, casename=casename)
 
-            outf = self._prop['outout_file']
             if outf is None:
                 outf = 'movie.html'
             else:
@@ -135,7 +136,7 @@ class MovieEncoder(object):
             f = open(outf, 'w')
             f.write(header + jscode + form + footer)
             f.close()
-            print "\n\nmovie in output file", outfilename
+            print "\n\nmovie in output file", outf
             return
 
         # Get command string (all other encoders are run as stand-alone apps)
@@ -723,7 +724,8 @@ FORCE_ENCODE_LAST_FRAME
             size = None
         return size            
 
-def html_movie(plotfiles, interval_ms=300, width=800, height=600):
+def html_movie(plotfiles, interval_ms=300, width=800, height=600,
+               casename='movie'):
     """ 
     Takes a list plotfiles which should be for example of the form:
         ['frame00.png', 'frame01.png', ... ]
@@ -735,8 +737,6 @@ def html_movie(plotfiles, interval_ms=300, width=800, height=600):
     buttons for controlling the movie.
     The parameter iterval_ms is the time interval between loading
     successive images and is in milliseconds.
-    The header_and_footer variable indicates whether the html text should
-    have <html> etc. at the start and end.
 
     The width and height parameters do not seem to have any effect
     for reasons not understood.
@@ -744,7 +744,10 @@ def html_movie(plotfiles, interval_ms=300, width=800, height=600):
     The following strings are returned: header, javascript code, form
     with movie and buttons, and footer. Concatenating these strings
     and dumping to an html file yields a kind of movie file to be
-    viewed in a browser.
+    viewed in a browser. The images variable in the javascript code
+    is unique for each movie, because it is annotated by the casename
+    string, so several such javascript sections can be used in the
+    same html file. 
 
     This function is based on code written by R.J. LeVeque, based on 
     a template from Alan McIntyre.
@@ -758,56 +761,59 @@ def html_movie(plotfiles, interval_ms=300, width=800, height=600):
                          'extension .png' % plotfiles[0])
     header = """\
 <html>
-"""
-    jscode = """
 <head>
+</head>
+<body>
+"""
+    no_images = len(plotfiles)
+    jscode = """
 <script language="Javascript">
 <!---
-var num_images = %s;
-var img_width = %d;
-var img_height = %d;
-var interval = %d;    
-var images = new Array();
+var num_images_%(casename)s = %(no_images)d;
+var img_width = %(width)d;
+var img_height = %(height)d;
+var interval = %(interval_ms)d;    
+var images_%(casename)s = new Array();
 
-function preload_images()
+function preload_images_%(casename)s()
 {
    t = document.getElementById("progress");
-""" % (len(plotfiles), width, height, interval_ms)
+""" % vars()
 
     i = 0
     for fname in plotfiles[1:]:
         i = i+1
         jscode += """
    t.innerHTML = "Preloading image ";
-   images[%s] = new Image(img_width, img_height);
-   images[%s].src = "%s";
-        """ % (i,i,fname)
+   images_%(casename)s[%(i)s] = new Image(img_width, img_height);
+   images_%(casename)s[%(i)s].src = "%(fname)s";
+        """ % vars()
     jscode += """
         t.innerHTML = "";
 }
 
-function tick()
+function tick_%(casename)s()
 {
-   frame += 1;
-   if (frame > num_images)
-       frame = 1;
+   frame_%(casename)s += 1;
+   if (frame_%(casename)s > num_images_%(casename)s)
+       frame_%(casename)s = 1;
 
-   document.movie.src = images[frame].src;
-   tt = setTimeout("tick()", interval);
+   document.movie.src = images_%(casename)s[frame_%(casename)s].src;
+   tt = setTimeout("tick_%(casename)s()", interval);
 }
 
-function startup()
+function startup_%(casename)s()
 {
-   preload_images();
-   frame = 0;
-   setTimeout("tick()", interval);
+   preload_images_%(casename)s();
+   frame_%(casename)s = 0;
+   setTimeout("tick_%(casename)s()", interval);
 }
 
 function stopit()
 { clearTimeout(tt); }
 
-function restart()
-{ tt = setTimeout("tick()", interval); }
+function restart_%(casename)s()
+{ tt = setTimeout("tick_%(casename)s()", interval); }
 
 function slower()
 { interval = interval/0.7; }
@@ -817,25 +823,23 @@ function faster()
 
 // --->
 </script>
-</head>
-"""
+""" % vars()
+    plotfile0 = plotfiles[0]
     form = """
-<body>
 <form>
 &nbsp;
-<input type="button" value="Start movie" onClick="startup()">
+<input type="button" value="Start movie" onClick="startup_%(casename)s()">
 <input type="button" value="Pause movie" onClick="stopit()">
-<input type="button" value="Restart movie" onClick="restart()">
+<input type="button" value="Restart movie" onClick="restart_%(casename)s()">
 &nbsp;
 <input type="button" value="Slower" onClick="slower()">
 <input type="button" value="Faster" onClick="faster()">
 </form>
 
 <p><div ID="progress"></div></p>
-<img src="%s" name="movie"/>
-</body>
-""" % plotfiles[0]
-    footer = '\n</html>\n'
+<img src="%(plotfile0)s" name="movie"/>
+""" % vars()
+    footer = '\n</body>\n</html>\n'
     return header, jscode, form, footer
 
 
