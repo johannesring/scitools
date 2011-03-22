@@ -755,6 +755,15 @@ def html_movie(plotfiles, interval_ms=300, width=800, height=600,
     a template from Alan McIntyre.
     """
     import os
+    import os
+    if not isinstance(plotfiles, (tuple,list)):
+        raise TypeError('html_movie: plotfiles=%s of wrong type %s' %
+                        (str(plotfiles), type(plotfiles)))
+    # Check that the plot files really exist
+    missing_files = [fname for fname in plotfiles if not os.path.isfile(fname)]
+    if missing_files:
+        raise ValueError('Missing plot files: %s' % str(missing_files)[1:-1])
+
     ext = os.path.splitext(plotfiles[0])[-1]
     if ext == '.png' or ext == '.jpg' or ext == '.jpeg' or ext == 'gif':
         pass
