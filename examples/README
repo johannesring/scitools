@@ -42,6 +42,7 @@ matlab2_demo.py
 mesh_demo.py
 quiver_demo2.py
 quiver_demo1.py
+rotate_vector.py
 slice_demo1.py
 slice_demo2.py
 streamline_demo1.py
