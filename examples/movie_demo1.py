@@ -53,7 +53,7 @@ movie('tmp_*.png', encoder='ffmpeg', fps=4,
       output_file='tmpmovie1.avi') # requires ffmpeg package
 
 movie('tmp_*.png', encoder='ffmpeg',
-      output_file='tmpmovie1c.mpeg', vodec='mpeg2video')
+      output_file='tmpmovie1c.mpeg', vcodec='mpeg2video')
 
 
 # mpeg_encode is not much available nowadays...
