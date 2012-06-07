@@ -39,7 +39,7 @@ def test_if_module_exists(modulename, msg='',
                 return False
     except Exception, e:
         if msg:
-            print message
+            print msg
             print 'Got an exception while trying to import %s:\n' % \
                 modulename, e
 
