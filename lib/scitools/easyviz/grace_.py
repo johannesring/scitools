@@ -815,6 +815,9 @@ class GraceBackend(BaseClass):
           '.gmf' (Graphics Meta File)
           '.mif' (Maker Interchange Format)
 
+        If `filename` contains just the file extension, say ``.png``,
+        it is saved to ``tmp.png``.
+
         Optional arguments:
 
         ==========  ======================================================
@@ -833,6 +836,9 @@ class GraceBackend(BaseClass):
         ==========  ======================================================
 
         """
+        if filename.startswith('.'):
+            filename = 'tmp' + filename
+
         self.setp(**kwargs)
         color = self.getp('color')
         replot = kwargs.get('replot', True)

@@ -925,6 +925,9 @@ class MatlabBackend(BaseClass):
           '.pcx' (Paintbrush 24-bit file)
           '.bmp' (Bitmap Image)
 
+        If `filename` contains just the file extension, say ``.png``,
+        it is saved to ``tmp.png``.
+
         Optional arguments:
 
           renderer    -- Specify which renderer to use. Available renderers
@@ -954,6 +957,9 @@ class MatlabBackend(BaseClass):
         >>> g = get_backend()
         >>> g.print_(g.gcf(), '-deps', 'foo.eps')
         """
+        if filename.startswith('.'):
+            filename = 'tmp' + filename
+
         self.setp(**kwargs)
         color = self.getp('color')
         replot = kwargs.get('replot', True)

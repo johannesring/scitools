@@ -1048,6 +1048,9 @@ class MatplotlibBackend(BaseClass):
           orientation -- 'portrait' (default) or 'landscape'. Only available
                          for PostScript output.
 
+        Note: if `filename` is just the file extension, such as ``.svg``,
+        the file content is returned as a string *and* saved to
+        ``tmp.svg``.
         """
         self.setp(**kwargs)
         color = self.getp('color')
@@ -1061,11 +1064,34 @@ class MatplotlibBackend(BaseClass):
         dpi = kwargs.get('dpi', 100)
         orientation = kwargs.get('orientation', 'portrait')
 
+        imgdata = None
+        if filename.startswith('.'):
+            from StringIO import StringIO
+            imgdata = StringIO()
+            self._g.savefig(imgdata,
+                            format=filename[1:],
+                            dpi=dpi,
+                            facecolor='w',
+                            edgecolor='w',
+                            orientation=orientation)
+            imgdata.seek(0)
+            filename = 'tmp' + filename  # dump to file too
+
         self._g.savefig(filename,
                         dpi=dpi,
                         facecolor='w',
                         edgecolor='w',
                         orientation=orientation)
+
+        if imgdata is None:
+            return None
+        else:
+            if filename.endswith('.svg'):
+                # Strip off the initial XML lines
+                figdata = '<svg' + imgdata.buf.split('<svg')[1]
+            else:
+                figdata = imgdata.buf
+            return figdata
 
     def clf(self):
         self._g.clf()

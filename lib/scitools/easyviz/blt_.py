@@ -813,11 +813,17 @@ class BltBackend(BaseClass):
           '.ps'   (PostScript)
           '.eps'  (Encapsulated PostScript)
 
+        If `filename` contains just the file extension, say ``.png``,
+        it is saved to ``tmp.png``.
+
         Optional arguments:
 
           color       -- True (colors) or False (gray-scale).
           orientation -- 'portrait' (default) or 'landscape'.
         """
+        if filename.startswith('.'):
+            filename = 'tmp' + filename
+
         self.setp(**kwargs)
         color = self.getp('color')
         replot = kwargs.get('replot', True)

@@ -67,7 +67,6 @@ from .FloatComparison import float_eq, float_ne, float_lt, float_le, \
      float_gt, float_ge
 import collections
 from functools import reduce
-from io import StringIO
 from Heaviside import *
 
 def meshgrid(x=None, y=None, z=None, sparse=False, indexing='xy',

@@ -1263,6 +1263,9 @@ end
           '.miff' (Magick Image File Format)
           FIXME: Add more formats like rgb, r+g+b, yuv, ...
 
+        If `filename` contains just the file extension, say ``.png``,
+        it is saved to ``tmp.png``.
+
         Optional arguments:
 
           color       -- True (colors) or False (black and white).
@@ -1286,6 +1289,9 @@ end
           frame       -- FIXME ...
 
         """
+        if filename.startswith('.'):
+            filename = 'tmp' + filename
+
         if DEBUG:
             print "Hardcopy to %s" % filename
 

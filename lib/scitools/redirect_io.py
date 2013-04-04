@@ -40,7 +40,7 @@ __author__ = 'Rolv Erlend Bredesen <rolv@simula.no>'
 __all__ = ['sys', '_tmp_err', 'hidden_stderr', '_redirect_err', '_return_err']
 
 import __future__
-from io import StringIO
+import StringIO
 import sys
 from contextlib import contextmanager
 

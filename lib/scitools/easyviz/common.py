@@ -1852,12 +1852,12 @@ class BaseClass(object):
         'closefig', 'closefigs', 'coneplot', 'colorbar',
         'colorcube', 'colormap', 'contour', 'contour3',
         'contourf', 'contourslice', 'cool', 'copper',
-        'daspect', 'figure', 'fill', 'fill3', 'flag', 'gca',
-        'gcf', 'get', 'gray', 'grid', 'hardcopy', 'hidden',
+        'daspect', 'dumpfig', 'figure', 'fill', 'fill3', 'flag',
+        'gca', 'gcf', 'get', 'gray', 'grid', 'hardcopy', 'hidden',
         'hold', 'hot', 'hsv', 'ishold', 'isocaps',
         'isosurface', 'jet', 'legend', 'light', 'lines',
-        'loglog', 'material', 'mesh', 'meshc', 'openfig',
-        'savefig', 'pcolor', 'pink', 'plot', 'plot3', 'prism',
+        'loglog', 'material', 'mesh', 'meshc', 'loadfig',
+        'pcolor', 'pink', 'plot', 'plot3', 'prism',
         'quiver', 'quiver3', 'reducevolum', 'semilogx',
         'semilogy', 'set', 'shading', 'show', 'slice_',
         'spring', 'streamline', 'streamribbon', 'streamslice',
@@ -2203,9 +2203,9 @@ class BaseClass(object):
         if self.getp('interactive') and self.getp('show'):
             self._replot()
 
-    def openfig(self, filename='figspickle.txt'):
+    def loadfig(self, filename='figspickle.txt'):
         """
-        Load figures saved in a file (with the given filename).
+        Load figures saved in a file (with the given filename) by dumpfig.
         The format of this file is currently standard Python pickle format.
         All figures in a previous session were dumped to the file, and
         all these figures are by this method reloaded and added to the
@@ -2228,11 +2228,11 @@ class BaseClass(object):
 
         self._figs.update(filefigs)
 
-    def savefig(self, filename='figspickle.txt'):
+    def dumpfig(self, filename='figspickle.txt'):
         """
         Save all current figures to a file (with the given filename).
         The file has standard Python pickle format (dict of Figure
-        instances). The figures can later be reloaded by the openfig
+        instances). The figures can later be reloaded by the loadfig
         method.
         """
         handle = open(filename, 'w')
