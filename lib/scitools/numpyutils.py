@@ -77,6 +77,8 @@ def meshgrid(x=None, y=None, z=None, sparse=False, indexing='xy',
     """
     Extension of ``numpy.meshgrid`` to 1D, 2D and 3D problems, and also
     support of both "matrix" and "grid" numbering.
+    (See below how it relates to ``meshgrid``, ``ogrid``, and ``mgrid``
+    in ``numpy``.)
 
     This extended version makes 1D/2D/3D coordinate arrays for
     vectorized evaluations of 1D/2D/3D scalar/vector fields over
@@ -122,12 +124,16 @@ def meshgrid(x=None, y=None, z=None, sparse=False, indexing='xy',
     (0, 1, 5)
     >>> meshgrid(y)      # 1D grid; y is just returned
     array([ 0.,  1.])
-    >>> meshgrid(x,y, indexing='ij')  # change to matrix indexing
+    >>> meshgrid(x,y, indexing='ij')  # change to matrix/Matlab-style indexing
     (array([[ 0. ,  0. ],
            [ 0.5,  0.5],
            [ 1. ,  1. ]]), array([[ 0.,  1.],
            [ 0.,  1.],
            [ 0.,  1.]]))
+
+    For use with ``contour`` plotting commands, one needs the
+    ``indexing='ij'`` argument, or equivalently one can call
+    ``ndgrid(x,y)`` (which means ``meshgrid(x,x, indexing='ij'``).
 
     Why does SciTools has its own meshgrid function when numpy has
     three similar functions, ``mgrid``, ``ogrid``, and ``meshgrid``?
@@ -137,9 +143,9 @@ def meshgrid(x=None, y=None, z=None, sparse=False, indexing='xy',
     option for generating sparse grids to conserve memory, like we
     have in SciTools by specifying the ``sparse`` argument.
 
-    Moreover, the numpy functions ``mgrid`` and ``ogrid`` does provide
+    Moreover, the numpy functions ``mgrid`` and ``ogrid`` do provide
     support for, respectively, full and sparse n-dimensional
-    meshgrids, however, these functions uses slices to generate the
+    meshgrids, however, these functions use slices to generate the
     meshgrids rather than one-dimensional coordinate arrays such as in
     Matlab. With slices, the user does not have the option to generate
     meshgrid with, e.g., irregular spacings, like::
@@ -162,7 +168,7 @@ def meshgrid(x=None, y=None, z=None, sparse=False, indexing='xy',
     In addition to the reasons mentioned above, the ``meshgrid``
     function in numpy supports only Cartesian indexing, i.e., x and y,
     not matrix indexing, i.e., rows and columns (on the other hand,
-    ``mgrid`` and ``ogrid`` supports only matrix indexing). The
+    ``mgrid`` and ``ogrid`` support only matrix indexing). The
     ``meshgrid`` function in SciTools supports both indexing
     conventions through the ``indexing`` keyword argument. Giving the
     string ``'ij'`` returns a meshgrid with matrix indexing, while

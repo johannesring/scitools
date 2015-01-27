@@ -311,9 +311,13 @@ def rename(from_regex, to_regex, filenames, backup=True, vcs=None):
                     shutil.copy(filename, filename + '.old~~')
                 elif os.path.isdir(filename):
                     shutil.copytree(filename, filename + '.old~~')
-            if os.path.isfile(filename):
+            if os.path.isfile(filename) or os.path.isdir(filename):
                 if vcs is None:
                     os.rename(filename, newname)
+                    if os.path.isfile(filename):
+                        print 'file',
+                    if os.path.isdir(filename):
+                        print 'directory',
                     print '%s renamed to %s' % (filename, newname)
                 elif isinstance(vcs, str):
                     vcs = vcs.lower()
@@ -816,4 +820,3 @@ if __name__ == '__main__':
         print '\n', __doc__
     else:
         print 'Cannot recognize command', program
-

@@ -112,14 +112,15 @@ class Heaviside:
         region and `resolution_inside` intervals in the smoothed region.
         """
         if self.eps == 0:
-            return [xmin, center, center, xmax], [0, 0, 1, 1]
+            return np.array([xmin, center, center, xmax]), \
+                   np.array([0, 0, 1, 1], float)
         else:
             n = float(resolution_inside)/self.eps
             x = np.concatenate((
                 np.linspace(xmin, center-self.eps, resolution_outside+1),
                 np.linspace(center-self.eps, center+self.eps, n+1),
                 np.linspace(center+self.eps, xmax, resolution_outside+1)))
-            y = self(x)
+            y = self(x - center)
             return x, y
 
 class IntegratedHeaviside:
